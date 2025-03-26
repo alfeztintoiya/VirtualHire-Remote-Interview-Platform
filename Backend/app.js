@@ -1,6 +1,7 @@
 const express = require('express')
 const mongoose = require('mongoose')
 const cors = require('cors')
+const cookieParser = require('cookie-parser')
 
 const app = express()
 
@@ -9,6 +10,7 @@ mongoose.connect("mongodb://127.0.0.1:27017/interview").then(()=>console.log("Mo
 
 app.use(cors());
 app.use(express.json());
+app.use(cookieParser());
 
 //Routing Import
 const authRoutes = require("./routes/authRoutes")
