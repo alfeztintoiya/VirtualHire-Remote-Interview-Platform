@@ -5,7 +5,7 @@ const jwt = require("jsonwebtoken");
 
 async function handleSignUpAuth(req,res){
     try {
-        const {name , email , password , role} = req.body;
+        const {name , email , password} = req.body;
 
         let  entry = await User.findOne({email});
         if(entry){
@@ -15,8 +15,7 @@ async function handleSignUpAuth(req,res){
         await User.create({
             name,
             email,
-            password,
-            role
+            password
         });
 
         return res.status(200).json({ message: "User Created Successfully."});
