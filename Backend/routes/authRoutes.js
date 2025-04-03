@@ -1,4 +1,3 @@
-const User = require("../model/user")
 const express = require('express')
 const {handleSignUpAuth, handleLoginAuth} = require('../controllers/authentications')
 
