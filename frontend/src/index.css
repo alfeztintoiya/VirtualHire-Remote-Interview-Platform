@@ -3,6 +3,7 @@
 
 @custom-variant dark (&:is(.dark *));
 
+
 :root {
   --radius: 0.625rem;
   --background: oklch(1 0 0);
@@ -116,5 +117,20 @@
   }
   body {
     @apply bg-background text-foreground;
+  }
+}
+
+
+.loader{
+  border-top-color: #3498db;
+  animation: spinner 1.5s linear infinite;
+}
+
+@keyframes spinner {
+  0%{
+    transform: rotate(0deg);
+  }
+  100%{
+    transform: rotate(90deg);
   }
 }

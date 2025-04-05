@@ -22,7 +22,7 @@ const Signup: React.FC = () => {
 
   // Recruiter fields
   const [companyName, setCompanyName] = useState("");
-  const [companySize, setCompanySize] = useState("");
+  const [designation, setDesignation] = useState("");
   const [industry, setIndustry] = useState("");
 
   const [termsAgreed, setTermsAgreed] = useState(false);
@@ -36,11 +36,12 @@ const Signup: React.FC = () => {
       const payload =
         role === "candidate"
           ? { role, name, email, password, collegeName, skills }
-          : { role, name, email, password, companyName, companySize, industry };
+          : { role, name, email, password, companyName, designation, industry };
 
-      
+      console.log(role);
       await axios.post("http://localhost:8011/auth/signup", payload, { withCredentials: true });
-      navigate("/login");
+      console.log(1);
+      window.location.href = "/login";
     } catch (error) {
       console.error("Signup error:", error);
       alert("Signup failed. Please try again.");
@@ -177,15 +178,15 @@ const Signup: React.FC = () => {
 
               
               <div>
-                <Label htmlFor="companySize" className="block mb-1 text-sm font-medium text-gray-700">
-                  Company Size
+                <Label htmlFor="designation" className="block mb-1 text-sm font-medium text-gray-700">
+                  Designation
                 </Label>
                 <Input
                   type="text"
-                  id="companySize"
-                  placeholder="e.g. 1-10, 50-100"
-                  value={companySize}
-                  onChange={(e) => setCompanySize(e.target.value)}
+                  id="designation"
+                  placeholder="HR Manager , "
+                  value={designation}
+                  onChange={(e) => setDesignation(e.target.value)}
                   required
                 />
               </div>

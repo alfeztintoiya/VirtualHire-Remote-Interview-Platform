@@ -26,12 +26,14 @@ const Home: React.FC = () => {
             comprehensive skill assessments. Empower your hiring team to
             confidently select the best candidates, faster.
           </p>
-          <Button
-            variant="default"
-            className="bg-green-500 hover:bg-green-600"
-          >
-            Get Started
-          </Button>
+          <Link to="/dashboard">
+            <Button 
+              variant="default"
+              className="bg-green-500 hover:bg-green-600"
+            >
+              Get Started
+            </Button>
+          </Link>
         </div>
         {/* Image / Illustration */}
         <div className="flex justify-center md:w-1/2">

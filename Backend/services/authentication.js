@@ -6,7 +6,6 @@ function createTokenForUser(user){
         _id: user.id,
         name: user.name,
         email: user.email,
-        profileImageUrl: user.profileImageUrl,
         role: user.role,
     };
 

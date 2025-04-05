@@ -5,7 +5,7 @@ const cookieParser = require('cookie-parser')
 const {checkForAuthenticationCookie} = require('./middlewares/authentication')
 const path = require('path')
 const app = express()
-
+const User = require("./model/user");
 mongoose.connect("mongodb://127.0.0.1:27017/interview").then(()=>console.log("Mongodb Connected.."))
                                                             .catch(err => console.log("MongoDB Connection error.."));
 
@@ -21,10 +21,20 @@ app.use(cors({
 // app.use(checkForAuthenticationCookie("token"));
 
 //Routing Import
-const authRoutes = require("./routes/authRoutes")
+const authRoutes = require("./routes/authRoutes");
+const interviewRoutes = require("./routes/interviewRoutes");
 
 app.use("/auth",authRoutes);
+app.use("/interviews",interviewRoutes);
 
+app.get("/candidates",async (req,res)=>{
+    try {
+        const candidate = await User.find({ });
+        return res.status(201).json({ candidate });
+    } catch (error) {
+        res.status(500).json({ error: error.message });
+    }
+});
 
 const PORT = 8011;
 app.listen(PORT,()=>{ console.log(`Server Started at ${PORT}..`)});

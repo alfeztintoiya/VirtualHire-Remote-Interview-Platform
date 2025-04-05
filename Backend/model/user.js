@@ -19,13 +19,24 @@ const UserSchema = new mongoose.Schema({
         type: String,
         required: true
     },
-    profileImageURL:{
+    collegeName: {
         type: String,
-        default: "images/userAvatar.png"
+    },
+    skills: {
+        type: String,
+    },
+    companyName: {
+        type: String,
+    },
+    designation: {
+        type: String
+    },
+    industry: {
+        type: String,
     },
     role:{
         type: String,
-        enum: ['candidate' , 'interviewer','admin'],
+        enum: ['candidate' , 'recruiter'],
         default: "candidate"
     }
 },{ timestamps: true});

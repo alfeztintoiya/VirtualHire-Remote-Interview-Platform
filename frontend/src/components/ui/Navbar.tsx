@@ -48,8 +48,8 @@ const Navbar: React.FC = () => {
             </Link>
             {/* Nav Links */}
             <div className="flex items-center space-x-6">
-              <Link to="/features" className="hover:underline">
-                Features
+              <Link to="/dashboard" className="hover:underline">
+                Dashboard
               </Link>
               <Link to="/contact" className="hover:underline">
                 Contact
