@@ -74,7 +74,7 @@ const App: React.FC = () => {
             }
           />
           <Route
-            path="/interview-room"
+            path="/interview/:roomId"
             element={
               <motion.div
                 initial={{ opacity: 0, scale: 0.9 }}
