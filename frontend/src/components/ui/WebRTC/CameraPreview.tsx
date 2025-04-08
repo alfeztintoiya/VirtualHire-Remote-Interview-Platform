@@ -1,6 +1,13 @@
+import { Camera } from "lucide-react";
 import React, { useRef, useEffect ,useState} from "react";
 
-const CameraPreview: React.FC = () => {
+interface CameraPreviewProps{
+  cameraOn: boolean;
+  micOn: boolean;
+}
+
+
+const CameraPreview: React.FC<CameraPreviewProps> = ({ cameraOn,micOn}) => {
   const videoRef = useRef<HTMLVideoElement>(null);
   const [streamStarted, setStreamStarted] = useState(false);
 
@@ -12,8 +19,10 @@ const CameraPreview: React.FC = () => {
           video: true,
           audio: true,
         });
-        console.log("Local stream obtained:", stream);
-        // Attach the stream to the video element
+        
+        stream.getVideoTracks().forEach((track)=> (track.enabled = cameraOn));
+        stream.getAudioTracks().forEach((track)=> (track.enabled = micOn));
+
         if (videoRef.current) {
           videoRef.current.srcObject = stream;
         }
@@ -32,7 +41,7 @@ const CameraPreview: React.FC = () => {
         stream.getTracks().forEach((track) => track.stop());
       }
     };
-  }, []);
+  }, [cameraOn,micOn]);
 
   return (
     <div className="h-full">
