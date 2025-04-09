@@ -1,10 +1,11 @@
 import React, { useEffect, useState } from "react";
 import { replace, useNavigate } from "react-router-dom";
 import axios from "axios";
-import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
-import { Checkbox } from "@/components/ui/checkbox";
-import { Label } from "@/components/ui/label";
+import { Button } from "../components/ui/button";
+import { Input } from "../components/ui/input";
+import { Checkbox } from "../components/ui/checkbox";
+import { Label } from "../components/ui/label";
+import {BASE_URL}  from "../constants/index";
 
 const Login: React.FC = () => {
   const [email, setEmail] = useState<string>("");
@@ -22,7 +23,7 @@ const Login: React.FC = () => {
     e.preventDefault();
     try {
       const response = await axios.post(
-        "http://localhost:8011/auth/login",
+        `${BASE_URL}/auth/login`,
         { email, password },
         { withCredentials: true }
       );
@@ -44,15 +45,15 @@ const Login: React.FC = () => {
   return (
     <div className="bg-white text-foreground">
      
-      {/* MAIN LOGIN SECTION */}
+      
       <div className="flex items-center justify-center py-12"> 
-        {/* Removed min-h-screen or large padding */}
+        
         <div className="w-full max-w-md p-4 space-y-6">
           <h2 className="mb-4 text-2xl font-semibold text-center">
             Log in to your VirtualHire account
           </h2>
           <form onSubmit={handleSubmit} className="p-6 space-y-4 border rounded-lg shadow-sm">
-            {/* Email Field */}
+            
             <div>
               <Label htmlFor="email" className="block text-sm font-medium text-gray-700">
                 Email
@@ -68,7 +69,7 @@ const Login: React.FC = () => {
               />
             </div>
 
-            {/* Password Field */}
+            
             <div>
               <Label htmlFor="password" className="block text-sm font-medium text-gray-700">
                 Password
@@ -84,7 +85,7 @@ const Login: React.FC = () => {
               />
             </div>
 
-            {/* Remember Me & Forgot Password */}
+            
             <div className="flex items-center justify-between">
               <div className="flex items-center space-x-2">
                 <Checkbox id="remember-me" />
@@ -97,7 +98,7 @@ const Login: React.FC = () => {
               </a>
             </div>
 
-            {/* Login Button */}
+            
             <Button
               type="submit"
               className="w-full mt-2 text-white bg-green-500 hover:bg-green-600"
@@ -105,7 +106,7 @@ const Login: React.FC = () => {
               Log in
             </Button>
 
-            {/* Divider */}
+            
             <div className="relative my-6">
               <div className="absolute inset-0 flex items-center">
                 <div className="w-full border-t border-gray-200" />
@@ -116,19 +117,9 @@ const Login: React.FC = () => {
                 </span>
               </div>
             </div>
-
-            {/* OAuth Buttons */}
-            <div className="flex gap-2">
-              <Button variant="outline" className="flex-1">
-                Google
-              </Button>
-              <Button variant="outline" className="flex-1">
-                Microsoft
-              </Button>
-            </div>
           </form>
 
-          {/* Sign Up Link */}
+          
           <div className="mt-4 text-sm text-center">
             <p className="text-gray-600">
               Don’t have an account?{" "}

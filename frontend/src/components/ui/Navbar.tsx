@@ -1,11 +1,13 @@
 import React, { useEffect, useState } from "react";
-import { Link } from "react-router-dom";
-import { Button } from "@/components/ui/button";
-import { BASE_URL_PUBLIC } from "@/constants";
+import { Link} from "react-router-dom";
+import { Button } from "../ui/button";
+import { Cookie } from "lucide-react";
+
 
 interface User {
   name: string;
 }
+
 
 const generateProfileSVG = (name: string): string => {
     const firstLetter = name.charAt(0).toUpperCase();
@@ -37,27 +39,38 @@ const Navbar: React.FC = () => {
   }, []);
 
   
-  
+  const handleLogout = () => {
+    
+    localStorage.clear();
+
+    const eqPos = document.cookie.indexOf("=");
+    const name = eqPos > -1 ? document.cookie.substring(0,eqPos): document.cookie;
+    document.cookie = name + "=;expires=Thu, 01 Jan 1970 00:00:00 UTC;path=/;"
+    window.location.href="/";
+};
+
   return (
     <div className="bg-white text-foreground">
       <nav className="border-b border-gray-200">
           <div className="container flex items-center justify-between h-16 px-4 mx-auto">
-            {/* Brand / Logo */}
-            <Link to="/" className="text-xl font-bold">
-              VirtualHire
+            
+            <Link to="/">
+            <img src="/interviewLogo.jpeg" alt="VirtualHire Logo" className="w-auto h-10" />
             </Link>
-            {/* Nav Links */}
+            
             <div className="flex items-center space-x-6">
-              <Link to="/dashboard" className="hover:underline">
-                Dashboard
-              </Link>
-              <Link to="/contact" className="hover:underline">
-                Contact
-              </Link>
+              
+              
 
               { isAuthenticated && user ? (
                 
                 <div className="flex items-center space-x-2">
+                  <Link to="/dashboard" >
+                    <Button variant="secondary" className="cursor-pointer">Dashboard</Button>
+                  </Link>
+              
+                  
+                  <Button variant="primary" className="cursor-pointer" onClick={handleLogout}>Logout</Button>
                   <img
                     src={generateProfileSVG(user.name)}
                     alt="User Profile"

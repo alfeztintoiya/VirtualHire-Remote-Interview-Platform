@@ -1,9 +1,9 @@
 import React from "react";
 import { Link } from "react-router-dom";
-import { Button } from "@/components/ui/button";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Button } from "../components/ui/button";
+import { Card, CardContent, CardHeader, CardTitle } from "../components/ui/card";
 
-// Replace these images with your own or from a CDN
+
 const heroImage = "https://cdn.usegalileo.ai/sdxl10/9faa4b93-dee9-45cd-b4a7-5fd24e9d8e0f.png";
 const featureImage1 = "https://cdn.usegalileo.ai/sdxl10/69295ffe-7590-4be0-bd03-c4b2e86c8599.png";
 const featureImage2 = "https://cdn.usegalileo.ai/sdxl10/df1121a9-97fe-4819-85ac-87d745e6b6da.png";
@@ -14,9 +14,9 @@ const testimonialImage3 = "https://cdn.usegalileo.ai/sdxl10/2e58a568-aa50-44e4-9
 const Home: React.FC = () => {
   return (
     <div className="bg-white text-foreground">
-      {/* HERO SECTION */}
+      
       <section className="container flex flex-col-reverse items-center gap-8 px-4 py-12 mx-auto md:flex-row md:py-20">
-        {/* Text Content */}
+      
         <div className="space-y-6 md:w-1/2">
           <h1 className="text-4xl font-bold md:text-5xl">
             Elevate Your Hiring Process with Seamless Virtual Assessments
@@ -35,7 +35,7 @@ const Home: React.FC = () => {
             </Button>
           </Link>
         </div>
-        {/* Image / Illustration */}
+        
         <div className="flex justify-center md:w-1/2">
           <img
             src={heroImage}
@@ -45,7 +45,7 @@ const Home: React.FC = () => {
         </div>
       </section>
 
-      {/* FEATURES SECTION */}
+      
       <section className="py-12 bg-gray-50">
         <div className="container px-4 mx-auto">
           <h2 className="mb-6 text-3xl font-bold">
@@ -58,7 +58,7 @@ const Home: React.FC = () => {
           </p>
 
           <div className="grid gap-8 md:grid-cols-2">
-            {/* Feature 1 */}
+            
             <div className="flex flex-col items-start space-y-4 md:flex-row md:space-x-4 md:space-y-0">
               <img
                 src={featureImage1}
@@ -74,7 +74,7 @@ const Home: React.FC = () => {
                 </p>
               </div>
             </div>
-            {/* Feature 2 */}
+            
             <div className="flex flex-col items-start space-y-4 md:flex-row md:space-x-4 md:space-y-0">
               <img
                 src={featureImage2}
@@ -93,11 +93,11 @@ const Home: React.FC = () => {
         </div>
       </section>
 
-      {/* TESTIMONIALS SECTION */}
+      
       <section className="container px-4 py-12 mx-auto">
         <h2 className="mb-8 text-3xl font-bold">What Our Users Say</h2>
         <div className="grid gap-8 md:grid-cols-3">
-          {/* Testimonial 1 */}
+          
           <Card>
             <CardHeader>
               <div className="flex items-center space-x-4">
@@ -120,7 +120,7 @@ const Home: React.FC = () => {
             </CardContent>
           </Card>
 
-          {/* Testimonial 2 */}
+          
           <Card>
             <CardHeader>
               <div className="flex items-center space-x-4">
@@ -143,7 +143,7 @@ const Home: React.FC = () => {
             </CardContent>
           </Card>
 
-          {/* Testimonial 3 */}
+          
           <Card>
             <CardHeader>
               <div className="flex items-center space-x-4">
@@ -168,7 +168,7 @@ const Home: React.FC = () => {
         </div>
       </section>
 
-      {/* CTA SECTION */}
+      
       <section className="py-12 bg-gray-50">
         <div className="container px-4 mx-auto text-center">
           <h2 className="mb-4 text-3xl font-bold">
@@ -186,7 +186,7 @@ const Home: React.FC = () => {
         </div>
       </section>
 
-      {/* FOOTER */}
+      
       <footer className="py-4 border-t border-gray-200">
         <div className="container flex flex-col items-center justify-between px-4 mx-auto space-y-2 md:flex-row">
           <p className="text-sm text-gray-500">

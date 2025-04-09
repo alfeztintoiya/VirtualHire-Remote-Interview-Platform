@@ -2,8 +2,8 @@ import React, { useState, useEffect } from "react";
 import { format } from "date-fns";
 import axios from "axios";
 import { toast } from "sonner";
-import { Button } from "@/components/ui/button";
-import { Card, CardHeader, CardTitle, CardContent } from "@/components/ui/card";
+import { Button } from "../components/ui/button";
+import { Card, CardHeader, CardTitle, CardContent } from "../components/ui/card";
 import {
   Dialog,
   DialogContent,
@@ -12,23 +12,25 @@ import {
   DialogHeader,
   DialogTitle,
   DialogTrigger,
-} from "@/components/ui/dialog";
+} from "../components/ui/dialog";
 import { Label } from "@radix-ui/react-label";
-import { Input } from "@/components/ui/input";
-import { Textarea } from "@/components/ui/textarea";
+import { Input } from "../components/ui/input";
+import { Textarea } from "../components/ui/textarea";
 import {
   Select,
   SelectTrigger,
   SelectValue,
   SelectContent,
   SelectItem,
-} from "@/components/ui/select";
-import { Calendar } from "@/components/ui/calendar";
+} from "../components/ui/select";
+import { Calendar } from "../components/ui/calendar";
 import { CalendarIcon } from "lucide-react";
-import { cn } from "@/lib/utils";
-import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
+import { cn } from "../lib/utils";
+import { Popover, PopoverContent, PopoverTrigger } from "../components/ui/popover";
+import {v4 as uuidv4} from "uuid";
+import {BASE_URL}  from "../constants/index";
 
-// Define a type for Interview
+//type for Interview
 type Interview = {
   _id: string;
   title: string;
@@ -38,15 +40,17 @@ type Interview = {
   date: string;
   time: string;
   status: string;
+  meetingLink: String;
 };
 
+//for candidate
 type Candidate = {
   email: string;
   name: string;
 };
 
 const Schedule: React.FC = () => {
-  // Form state for scheduling a new interview
+  
   const [title, setTitle] = useState("");
   const [description, setDescription] = useState("");
   const [candidate, setCandidate] = useState("");
@@ -54,18 +58,25 @@ const Schedule: React.FC = () => {
   const [date, setDate] = useState<Date | null>(null);
   const [time, setTime] = useState("");
 
-  // State for storing interviews list
+  
   const [interviews, setInterviews] = useState<Interview[]>([]);
   const [loading, setLoading] = useState<boolean>(true);
 
   const [candidates,setCandidates] = useState<Candidate[]>([]);
 
-  // Fetch scheduled interviews from backend
+  const storedUser = localStorage.getItem('user');
+  let user;
+  if(storedUser){
+    user = JSON.parse(storedUser);
+  }
+
+  
   const fetchInterviews = async () => {
     try {
-      const res = await axios.get("http://localhost:8011/interviews", {
+      const res = await axios.get(`${BASE_URL}/interviews`, {
         withCredentials: true,
       });
+      console.log(res);
       // Assume backend returns an array directly; adjust if nested (e.g., res.data.interviews)
       setInterviews(res.data.interviews);
       setLoading(false);
@@ -78,7 +89,7 @@ const Schedule: React.FC = () => {
 
   const fetchCandidates = async () => {
     try {
-      const res = await axios.get("http://localhost:8011/candidates", {
+      const res = await axios.get(`${BASE_URL}/candidates`, {
         withCredentials: true,
       });
       console.log("Candidate Error: ",res);
@@ -93,7 +104,7 @@ const Schedule: React.FC = () => {
     fetchCandidates();
   }, []);
 
-  // Reset form after scheduling
+  
   const resetForm = () => {
     setTitle("");
     setDescription("");
@@ -103,29 +114,29 @@ const Schedule: React.FC = () => {
     setTime("");
   };
 
-  // Handler for saving a new scheduled interview
+  
   const handleSaveChanges = async (e: React.FormEvent) => {
     e.preventDefault();
 
     const payload = {
       title: title,
       description,
-      candidate,      // e.g., candidate email or ID
-      interviewer,    // e.g., interviewer email or ID
+      candidate,      
+      interviewer,    
       date: date ? date.toISOString() : null,
       time,
-      status: "Upcoming", // default status
+      meetingLink: uuidv4(),
     };
 
     try {
-      const res = await axios.post("http://localhost:8011/interviews", payload, {
+      const res = await axios.post(`${BASE_URL}/interviews`, payload, {
         withCredentials: true,
       });
       console.log(res);
       if (res.status === 201) {
         toast.success("Interview scheduled successfully!");
         resetForm();
-        fetchInterviews(); // Refresh the interviews list after adding a new interview
+        fetchInterviews(); 
       } else {
         toast.error("Failed to schedule interview. Please try again.");
       }
@@ -137,13 +148,17 @@ const Schedule: React.FC = () => {
 
   return (
     <div className="min-h-screen bg-white text-foreground">
-      {/* Page Header with Schedule Interview Dialog */}
+      
       <div className="container flex items-center justify-between px-4 py-8 mx-auto">
         <div>
           <h2 className="text-2xl font-semibold">Interviews</h2>
           <p className="text-gray-600">Schedule and manage interviews</p>
         </div>
-        <div>
+        
+        {
+          user.role==="recruiter" ? (
+            <>
+            <div>
           <Dialog>
             <DialogTrigger asChild>
               <Button
@@ -162,7 +177,7 @@ const Schedule: React.FC = () => {
               </DialogHeader>
               <form onSubmit={handleSaveChanges}>
                 <div className="grid gap-4 py-4">
-                  {/* Title */}
+                  
                   <div className="grid items-center grid-cols-4 gap-4">
                     <Label htmlFor="title" className="text-right">
                       Title
@@ -176,7 +191,7 @@ const Schedule: React.FC = () => {
                       required
                     />
                   </div>
-                  {/* Description */}
+                  
                   <div className="grid items-center grid-cols-4 gap-4">
                     <Label htmlFor="description" className="text-right">
                       Description
@@ -189,7 +204,7 @@ const Schedule: React.FC = () => {
                       onChange={(e) => setDescription(e.target.value)}
                     />
                   </div>
-                  {/* Candidate (Select) */}
+                  
                   <div className="grid items-center grid-cols-4 gap-4">
                     <Label className="text-right">Candidate</Label>
                     <Select value={candidate} onValueChange={setCandidate}>
@@ -205,7 +220,7 @@ const Schedule: React.FC = () => {
                       </SelectContent>
                     </Select>
                   </div>
-                  {/* Interviewer (Select) */}
+                  
                   <div className="grid items-center grid-cols-4 gap-4">
                     <Label className="text-right">Interviewer</Label>
                     <Select value={interviewer} onValueChange={setInterviewer}>
@@ -213,13 +228,19 @@ const Schedule: React.FC = () => {
                         <SelectValue placeholder="Select an interviewer" />
                       </SelectTrigger>
                       <SelectContent>
-                        <SelectItem value="john.doe@example.com">John Doe</SelectItem>
-                        <SelectItem value="burak@example.com">Burak Ohmez</SelectItem>
-                        <SelectItem value="alice@example.com">Alice Zhang</SelectItem>
+                        { user.role==="recruiter" ? (
+                          <SelectItem key={user.email} value={user.email}>
+                            {user.name}
+                          </SelectItem>
+                        ):(
+                          <SelectItem key={"Random"} value={"Random"}>
+                            {"Random"}
+                          </SelectItem>
+                        )}
                       </SelectContent>
                     </Select>
                   </div>
-                  {/* Date Picker */}
+                  
                   <div className="grid items-center grid-cols-4 gap-4">
                     <Label htmlFor="date" className="text-right">
                       Pick a Date
@@ -249,7 +270,7 @@ const Schedule: React.FC = () => {
                       </Popover>
                     </div>
                   </div>
-                  {/* Time */}
+                  
                   <div className="grid items-center grid-cols-4 gap-4">
                     <Label htmlFor="time" className="text-right">
                       Time
@@ -265,7 +286,8 @@ const Schedule: React.FC = () => {
                   </div>
                 </div>
                 <DialogFooter>
-                  <Button type="submit" className="text-white bg-green-500 hover:bg-green-600">
+                  <Button type="submit" className="text-white bg-green-500 hover:bg-green-600"
+                    disabled={!date || !title || !candidate || !interviewer || !time}>
                     Save changes
                   </Button>
                 </DialogFooter>
@@ -273,9 +295,12 @@ const Schedule: React.FC = () => {
             </DialogContent>
           </Dialog>
         </div>
+            </>
+          ):null
+        }
       </div>
 
-      {/* Interviews List */}
+      
       <div className="container px-4 pb-8 mx-auto">
         {loading ? (
           <p className="text-center text-gray-600">Loading interviews...</p>
@@ -298,6 +323,9 @@ const Schedule: React.FC = () => {
                   <p className="text-sm text-gray-500">
                     Interviewer: {interview.interviewer}
                   </p>
+                  <p className="text-sm text-gray-500">
+                    Meeting Link: {interview.meetingLink}
+                  </p>
                   <div
                     className={`mt-4 inline-block rounded px-2 py-1 text-xs ${
                       interview.status === "Live Now"
@@ -309,6 +337,17 @@ const Schedule: React.FC = () => {
                   >
                     {interview.status}
                   </div>
+
+                  {interview.status === "Live Now" && (
+                    <div className="mt-2">
+                    <Button
+                      className="mt-2 text-white bg-green-500 hover:bg-green-600"
+                      onClick={() => window.open(`/interview/room?roomId=${interview.meetingLink}&candidate=${interview.candidate}&recruiter=${interview.interviewer}`, "_blank")}
+                    >
+                      Join Meeting
+                    </Button>
+                    </div>
+                  )}
                 </CardContent>
               </Card>
             ))}

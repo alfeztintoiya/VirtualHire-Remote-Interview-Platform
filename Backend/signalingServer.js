@@ -28,6 +28,15 @@ io.on("connection", (socket) => {
         socket.to(roomId).emit("user-connected", socket.id);
     });
 
+    socket.on("code-change",({ roomId,code})=>{
+        console.log(`Code update in ${roomId} from ${socket.id}`);
+        socket.to(roomId).emit("code-change", code);
+    });
+
+    socket.on("subtitle", ({ roomId, text }) => {
+        socket.to(roomId).emit("subtitle", text);
+    });
+    
     socket.on("offer", (data) => {
         console.log("Received offer from", socket.id, "for target", data.target);
         socket.to(data.target).emit("offer", { sdp: data.sdp, caller: socket.id });

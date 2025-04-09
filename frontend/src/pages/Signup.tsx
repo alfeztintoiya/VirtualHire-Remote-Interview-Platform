@@ -2,11 +2,12 @@ import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
 
-// Shadcn UI Components
-import { Button } from "@/components/ui/button";
+
+import { Button } from "../components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Checkbox } from "@/components/ui/checkbox";
+import {BASE_URL}  from "../constants/index";
 
 type Role = "candidate" | "recruiter";
 
@@ -16,11 +17,11 @@ const Signup: React.FC = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
 
-  // Candidate fields
+  
   const [collegeName, setCollegeName] = useState("");
   const [skills, setSkills] = useState("");
 
-  // Recruiter fields
+  
   const [companyName, setCompanyName] = useState("");
   const [designation, setDesignation] = useState("");
   const [industry, setIndustry] = useState("");
@@ -38,9 +39,9 @@ const Signup: React.FC = () => {
           ? { role, name, email, password, collegeName, skills }
           : { role, name, email, password, companyName, designation, industry };
 
-      console.log(role);
-      await axios.post("http://localhost:8011/auth/signup", payload, { withCredentials: true });
-      console.log(1);
+      
+      await axios.post(`${BASE_URL}/auth/signup`, payload, { withCredentials: true });
+      
       window.location.href = "/login";
     } catch (error) {
       console.error("Signup error:", error);
@@ -220,7 +221,7 @@ const Signup: React.FC = () => {
             </Label>
           </div>
 
-          {/* Create Account Button */}
+          
           <Button
             type="submit"
             className="w-full mt-4 text-white bg-green-500 hover:bg-green-600"
@@ -230,7 +231,7 @@ const Signup: React.FC = () => {
           </Button>
         </form>
 
-        {/* Already have an account? */}
+        
         <div className="mt-4 text-sm text-center">
           <p className="text-gray-600">
             Already have an account?{" "}

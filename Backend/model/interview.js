@@ -24,10 +24,19 @@ const interviewSchema = new mongoose.Schema({
         type: String,
         required: true,
     },
+    meetingLink:{
+        type: String,
+        required: true,
+    },
     status: {
         type: String,
         enum: ["Upcoming","Live Now","Completed"],
         default: "Upcoming",
+    },
+    scheduledBy:{
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "user",
+        required: true,
     }
 }, { timestamps: true });
 

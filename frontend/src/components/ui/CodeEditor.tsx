@@ -1,18 +1,20 @@
 import React, { useState, useEffect } from "react";
 import Editor from "@monaco-editor/react";
 import * as monaco from "monaco-editor";
+import {io,Socket} from "socket.io-client";
+import { useLocation } from "react-router-dom";
+
+const socket: Socket = io("http://localhost:8013");
 
 const languageOptions = [
   { label: "JavaScript", value: "javascript" },
   { label: "TypeScript", value: "typescript" },
   { label: "Python", value: "python" },
-  // You can add more languages here
 ];
 
-// Function to register a basic Python completion provider
+
 const registerPythonCompletionProvider = () => {
-  // Check if the provider is already registered to avoid duplicates.
-  // For a production solution, you might store a flag in a module-level variable.
+  
   monaco.languages.registerCompletionItemProvider("python", {
     provideCompletionItems: (model, position) => {
       const suggestions = [
@@ -51,15 +53,33 @@ const registerPythonCompletionProvider = () => {
 };
 
 const CodeEditor: React.FC = () => {
+
+  const location = useLocation();
+  const queryParams = new URLSearchParams(location.search);
+  const roomId = queryParams.get("roomId") || "default-room";
+  
   const [language, setLanguage] = useState("javascript");
   const [code, setCode] = useState("// Start coding...");
   
+  useEffect(()=>{
+    socket.emit("join", roomId);
+
+    
+    socket.on("code-change", (newCode: string) => {
+      setCode(newCode);
+    });
+
+    return () => {
+      socket.off("code-change");
+    };
+  },[roomId]);
+
   useEffect(() => {
     if (language === "python") {
-      // Register the Python completion provider
+      
       registerPythonCompletionProvider();
     }
-    // Optionally, you might want to unregister or prevent duplicate registration in a production setup.
+    
   }, [language]);
 
   const handleLanguageChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
@@ -67,21 +87,23 @@ const CodeEditor: React.FC = () => {
   };
 
   const handleEditorChange = (value: string | undefined) => {
-    setCode(value || "");
+    const updatedCode = value || "";
+    setCode(updatedCode);
     console.log("Current code:", value);
+    socket.emit("code-change", { roomId, code: updatedCode });
   };
 
   return (
-    <div className="h-full flex flex-col">
-      <div className="mb-2 flex items-center gap-2">
-        <label className="text-gray-700 font-medium" htmlFor="language-select">
+    <div className="flex flex-col h-full">
+      <div className="flex items-center gap-2 mb-2">
+        <label className="font-medium text-gray-700" htmlFor="language-select">
           Language:
         </label>
         <select
           id="language-select"
           value={language}
           onChange={handleLanguageChange}
-          className="border rounded px-2 py-1"
+          className="px-2 py-1 border rounded"
         >
           {languageOptions.map((option) => (
             <option key={option.value} value={option.value}>
@@ -96,7 +118,7 @@ const CodeEditor: React.FC = () => {
           language={language}
           value={code}
           onChange={handleEditorChange}
-          theme="vs-light" // Change to "vs-dark" for a dark theme if desired
+          theme="vs-light" 
           options={{
             minimap: { enabled: false },
           }}

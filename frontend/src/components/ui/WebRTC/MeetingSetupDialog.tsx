@@ -14,10 +14,10 @@ import { useNavigate } from "react-router-dom";
 import {v4 as uuidv4} from "uuid";
 
 const MeetingSetupDialog: React.FC = () => {
-  // State for toggling mic and camera
+  
   const [micOn, setMicOn] = useState(false);
   const [cameraOn, setCameraOn] = useState(false);
-  // Local stream state to control media tracks
+  
   const [localStream, setLocalStream] = useState<MediaStream | null>(null);
   const navigate = useNavigate();
   const [meetingStart, setMeetingStart] = useState(false);
@@ -26,7 +26,7 @@ const MeetingSetupDialog: React.FC = () => {
   useEffect(() => {
     const getLocalStream = async () => {
       try {
-        // Request video and audio permissions
+        
         const stream = await navigator.mediaDevices.getUserMedia({
           video: true,
           audio: true,
@@ -41,7 +41,7 @@ const MeetingSetupDialog: React.FC = () => {
     if(meetingStart)
       getLocalStream();
 
-    // Cleanup: Stop all tracks when component unmounts
+    
     return () => {
       if (localStream) {
         localStream.getTracks().forEach((track) => track.stop());
@@ -49,7 +49,7 @@ const MeetingSetupDialog: React.FC = () => {
     };
   }, [meetingStart]);
 
-  // Toggle the camera by enabling/disabling video tracks
+  
   const toggleCamera = () => {
     if (localStream) {
       localStream.getVideoTracks().forEach((track) => {
@@ -59,7 +59,7 @@ const MeetingSetupDialog: React.FC = () => {
     }
   };
 
-  // Toggle the mic by enabling/disabling audio tracks
+  
   const toggleMic = () => {
     if (localStream) {
       localStream.getAudioTracks().forEach((track) => {
@@ -69,10 +69,10 @@ const MeetingSetupDialog: React.FC = () => {
     }
   };
 
-  // When the user clicks "Join Meeting" redirect to Interview Room
+  
   const handleJoinMeeting = () => {
     const newRoomId = uuidv4();
-    navigate(`/interview/${newRoomId}`);
+    navigate(`/interview/room?roomId=${newRoomId}`);
   };
 
   return (
@@ -80,7 +80,7 @@ const MeetingSetupDialog: React.FC = () => {
       <DialogTrigger asChild>
         <Button
           variant="default"
-          className="w-full mt-7 bg-green-500 text-white hover:bg-green-600"
+          className="w-full text-white bg-green-500 mt-7 hover:bg-green-600"
           onClick={()=>setMeetingStart(true)}
         >
           Start Call
@@ -94,7 +94,7 @@ const MeetingSetupDialog: React.FC = () => {
           </DialogDescription>
         </DialogHeader>
         <div className="grid gap-4 py-4">
-          {/* Video Preview Section */}
+          
           <div className="flex justify-center">
             {localStream ? (
               <video
@@ -112,16 +112,16 @@ const MeetingSetupDialog: React.FC = () => {
               <p className="text-center text-gray-500">Loading camera...</p>
             )}
           </div>
-          {/* Control Settings Section */}
-          <div className="flex justify-around items-center">
+          
+          <div className="flex items-center justify-around">
             <div className="flex flex-col items-center">
-              <Label className="text-sm mb-1">Camera</Label>
+              <Label className="mb-1 text-sm">Camera</Label>
               <Button variant="outline" onClick={toggleCamera}>
                 {cameraOn ? "On" : "Off"}
               </Button>
             </div>
             <div className="flex flex-col items-center">
-              <Label className="text-sm mb-1">Mic</Label>
+              <Label className="mb-1 text-sm">Mic</Label>
               <Button variant="outline" onClick={toggleMic}>
                 {micOn ? "On" : "Off"}
               </Button>
@@ -132,7 +132,7 @@ const MeetingSetupDialog: React.FC = () => {
           <Button
             onClick={handleJoinMeeting}
             variant="default"
-            className="bg-green-500 hover:bg-green-600 text-white"
+            className="text-white bg-green-500 hover:bg-green-600"
           >
             Join Meeting
           </Button>

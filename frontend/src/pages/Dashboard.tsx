@@ -1,12 +1,13 @@
-import React from "react";
-import { Card, CardHeader, CardTitle, CardContent } from "@/components/ui/card";
-import { Button } from "@/components/ui/button";
+import React,{ useState } from "react";
+import { Card, CardHeader, CardTitle, CardContent } from "../components/ui/card";
+import { Button } from "../components/ui/button";
 import { Link, useNavigate } from "react-router-dom";
 import { v4 as uuidv4 } from "uuid";
-import StartCallDialog from "../components/ui/StartCallDialog";
+import {Dialog, DialogContent, DialogHeader, DialogTitle, DialogFooter} from "../components/ui/dialog";
 import MeetingSetupDialog from "../components/ui/WebRTC/MeetingSetupDialog";
+import { Input } from "../components/ui/input";
+import {BASE_URL}  from "../constants/index";
 
-// Updated SVG components with proper JSX attributes
 const CallLogo: React.FC = () => (
   <svg
     xmlns="http://www.w3.org/2000/svg"
@@ -76,25 +77,35 @@ const RecordingLogo: React.FC = () => (
 );
 
 const Dashboard: React.FC = () => {
+  const [isJoinDialogOpen, setIsJoinDialogOpen] = useState(false);
+  const [meetingId, setMeetingId] = useState("");
   const navigate = useNavigate();
 
-  const handleStartCall = () => {
-    const newRoomId = uuidv4();
-    navigate(`/interview/${newRoomId}`);
+  const handleJoinMeeting = () => {
+    if (meetingId.trim()) {
+      navigate(`/interview/${meetingId.trim()}`);
+      setIsJoinDialogOpen(false);
+    }
   };
+
+  const storedUser = localStorage.getItem('user');
+  let user;
+  if(storedUser){
+    user = JSON.parse(storedUser);
+  }
 
   return (
     <div className="min-h-screen bg-white text-foreground">
-      {/* DASHBOARD CONTENT */}
+      
       <div className="container px-4 py-8 mx-auto">
         <h2 className="mb-2 text-2xl font-semibold text-gray-900">Dashboard</h2>
         <p className="mb-6 text-gray-700">
           Manage your interviews and activities seamlessly.
         </p>
 
-        {/* CARD GRID */}
+        
         <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
-          {/* New Call */}
+          
           <Card className="transition-shadow hover:shadow-lg">
             <CardHeader className="flex items-center gap-2">
               <CallLogo />
@@ -108,7 +119,7 @@ const Dashboard: React.FC = () => {
             </CardContent>
           </Card>
 
-          {/* Join Interview */}
+          
           <Card className="transition-shadow hover:shadow-lg">
             <CardHeader className="flex items-center gap-2">
               <InterviewLogo />
@@ -121,34 +132,34 @@ const Dashboard: React.FC = () => {
               <Button
                 variant="default"
                 className="w-full mt-2 text-white bg-green-500 hover:bg-green-600"
+                onClick={() => setIsJoinDialogOpen(true)}
               >
                 Join Now
               </Button>
             </CardContent>
           </Card>
 
-          {/* Schedule */}
-          <Card className="transition-shadow hover:shadow-lg">
-            <CardHeader className="flex items-center gap-2">
-              <ScheduleLogo />
-              <CardTitle className="text-lg">Schedule</CardTitle>
-            </CardHeader>
-            <CardContent>
-              <p className="text-sm text-gray-600">
-                Plan and schedule upcoming interviews.
-              </p>
-              <Link to="/schedule">
-                <Button
-                  variant="default"
-                  className="w-full mt-2 text-white bg-green-500 hover:bg-green-600"
-                >
-                  Schedule
-                </Button>
-              </Link>
-            </CardContent>
-          </Card>
-
-          {/* Recordings */}
+          
+              <Card className="transition-shadow hover:shadow-lg">
+                <CardHeader className="flex items-center gap-2">
+                  <ScheduleLogo />
+                  <CardTitle className="text-lg">Schedule</CardTitle>
+                </CardHeader>
+                <CardContent>
+                  <p className="text-sm text-gray-600">
+                    Plan and schedule upcoming interviews.
+                  </p>
+                  <Link to="/schedule">
+                    <Button
+                      variant="default"
+                      className="w-full mt-2 text-white bg-green-500 hover:bg-green-600"
+                    >
+                      Schedule
+                    </Button>
+                  </Link>
+                </CardContent>
+              </Card>
+          
           <Card className="transition-shadow hover:shadow-lg">
             <CardHeader className="flex items-center gap-2">
               <RecordingLogo />
@@ -160,13 +171,37 @@ const Dashboard: React.FC = () => {
               </p>
               <Button
                 variant="default"
-                className="w-full mt-7 text-white bg-green-500 hover:bg-green-600"
+                className="w-full text-white bg-green-500 mt-7 hover:bg-green-600"
               >
                 View Recordings
               </Button>
             </CardContent>
           </Card>
         </div>
+
+        
+        <Dialog open={isJoinDialogOpen} onOpenChange={setIsJoinDialogOpen}>
+            <DialogContent>
+              <DialogHeader>
+                <DialogTitle>Enter Meeting ID or Link</DialogTitle>
+              </DialogHeader>
+              <Input
+                placeholder="Enter meeting ID (e.g. abc-123)"
+                value={meetingId}
+                onChange={(e) => setMeetingId(e.target.value)}
+              />
+              <DialogFooter>
+                <Button
+                  variant="default"
+                  className="text-white bg-blue-600"
+                  onClick={handleJoinMeeting}
+                >
+                  Join Meeting
+                </Button>
+              </DialogFooter>
+            </DialogContent>
+        </Dialog>
+
       </div>
     </div>
   );

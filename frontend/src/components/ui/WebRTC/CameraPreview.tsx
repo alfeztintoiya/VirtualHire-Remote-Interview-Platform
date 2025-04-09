@@ -14,7 +14,7 @@ const CameraPreview: React.FC<CameraPreviewProps> = ({ cameraOn,micOn}) => {
   useEffect(() => {
     const startCamera = async () => {
       try {
-        // Request video and audio permissions
+        
         const stream = await navigator.mediaDevices.getUserMedia({
           video: true,
           audio: true,
@@ -34,7 +34,7 @@ const CameraPreview: React.FC<CameraPreviewProps> = ({ cameraOn,micOn}) => {
 
     startCamera();
 
-    // Cleanup: Stop all tracks on unmount
+    
     return () => {
       if (videoRef.current && videoRef.current.srcObject) {
         const stream = videoRef.current.srcObject as MediaStream;
@@ -50,7 +50,7 @@ const CameraPreview: React.FC<CameraPreviewProps> = ({ cameraOn,micOn}) => {
         autoPlay
         muted
         playsInline
-        className="w-full h-full object-contain rounded-md bg-gray-100"
+        className="object-contain w-full h-full bg-gray-100 rounded-md"
       />
     </div>
   );
