@@ -31,7 +31,7 @@ app.use("/interviews",interviewRoutes);
 
 app.get("/candidates",async (req,res)=>{
     try {
-        const candidate = await User.find({ });
+        const candidate = await User.find({ role: "candidate" });
         return res.status(201).json({ candidate });
     } catch (error) {
         res.status(500).json({ error: error.message });

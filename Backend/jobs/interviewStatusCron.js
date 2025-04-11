@@ -23,7 +23,7 @@ cron.schedule('*/10 * * * * *',async ()=>{
                 await interview.save();
                 console.log(`Interview ${interview._id} is now Live.`);
             }
-            else if(diffInMinutes >= -10){
+            else if(diffInMinutes >= 10){
                 interview.status = 'Cancelled';
                 await interview.save();
                 console.log(`Interview ${interview._id} is now Live.`);

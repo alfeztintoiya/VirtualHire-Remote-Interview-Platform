@@ -168,7 +168,7 @@ const Schedule: React.FC = () => {
                 Schedule Interview
               </Button>
             </DialogTrigger>
-            <DialogContent className="sm:max-w-[600px]">
+            <DialogContent className="sm:max-w-[600px] bg-white shadow-lg">
               <DialogHeader>
                 <DialogTitle>Schedule Interview</DialogTitle>
                 <DialogDescription>
@@ -213,7 +213,7 @@ const Schedule: React.FC = () => {
                       </SelectTrigger>
                       <SelectContent>
                         {candidates.map((cand) => (
-                          <SelectItem key={cand.email} value={cand.email}>
+                          <SelectItem key={cand.email} value={cand.email} className="bg-white">
                             {cand.name}
                           </SelectItem>
                         ))}
@@ -227,7 +227,7 @@ const Schedule: React.FC = () => {
                       <SelectTrigger className="col-span-3">
                         <SelectValue placeholder="Select an interviewer" />
                       </SelectTrigger>
-                      <SelectContent>
+                      <SelectContent className="bg-white">
                         { user.role==="recruiter" ? (
                           <SelectItem key={user.email} value={user.email}>
                             {user.name}
