@@ -1,6 +1,10 @@
-# Remote Interview Platform
+# VirtualHire
 
-A modern, real-time video interviewing platform that enables seamless remote technical interviews with built-in code editor support.
+<div align="center">
+  <img src="frontend/public/interviewLogo.jpeg" alt="VirtualHire Logo" width="200"/>
+</div>
+
+A modern, real-time video interviewing platform that enables seamless remote technical interviews with built-in code editor support. VirtualHire revolutionizes the way companies conduct technical interviews by providing a comprehensive suite of tools for both interviewers and candidates.
 
 ## Features
 
@@ -64,18 +68,21 @@ A modern, real-time video interviewing platform that enables seamless remote tec
 ### Installation
 
 1. Clone the repository
+
    ```bash
    git clone <repository-url>
    cd RemoteInterviewPlatform
    ```
 
 2. Install backend dependencies
+
    ```bash
    cd Backend
    npm install
    ```
 
 3. Install frontend dependencies
+
    ```bash
    cd frontend
    npm install
@@ -87,6 +94,7 @@ A modern, real-time video interviewing platform that enables seamless remote tec
 ### Running the Application
 
 1. Start the backend server
+
    ```bash
    cd Backend
    npm start
