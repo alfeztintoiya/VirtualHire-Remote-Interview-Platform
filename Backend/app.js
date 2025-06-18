@@ -22,7 +22,7 @@ app.use(cors({
 }));
 // app.use(checkForAuthenticationCookie("token"));
 
-//Routing Import
+
 const authRoutes = require("./routes/authRoutes");
 const interviewRoutes = require("./routes/interviewRoutes");
 

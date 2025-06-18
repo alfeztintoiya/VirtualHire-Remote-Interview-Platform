@@ -69,7 +69,7 @@ UserSchema.static("matchPasswordAndGenerateToken",async function(email , passwor
         throw new Error('Incorrect Password');
     }
 
-    const token = createTokenForUser(user);
+    const token = createTokenForUser (user);
     return token;
 })
 
